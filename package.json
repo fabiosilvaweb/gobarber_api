@@ -5,18 +5,26 @@
   "author": "Fabio da Silva <fabiodasilva95@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "dev:server": "tsnd --respawn --transpile-only --ignore-watch node_modules src/server.ts",
-    "typeorm": ""
+    "dev:server": "tsnd --inspect --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "tsnd ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.29"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/multer": "^1.4.5",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "eslint": "^7.15.0",
