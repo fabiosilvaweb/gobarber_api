@@ -1,28 +1,25 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
-import AppError from '../../../errors/AppError';
-import User from '../entities/User';
+import AppError from '@shared/errors/AppError';
+import auth from '@config/auth';
+import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
 
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
 class AuthenticateUserService {
-  public async execute({ email, password }: Request): Promise<Response> {
-    const usersRepository = getRepository(User);
+  constructor(private usersRepository: IUsersRepository) {}
 
-    const user = await usersRepository.findOne({
-      where: {
-        email,
-      },
-    });
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('E-mail ou senha inválidos!', 401);
@@ -34,9 +31,9 @@ class AuthenticateUserService {
       throw new AppError('E-mail ou senha inválidos!', 401);
     }
 
-    const token = sign({}, '123', {
+    const token = sign({}, String(auth.secret), {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: auth.expiresIn,
     });
 
     return {

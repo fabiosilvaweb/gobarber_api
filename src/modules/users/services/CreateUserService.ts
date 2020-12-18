@@ -1,20 +1,19 @@
-import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import UsersRepository from '../repositories/UsersRepository';
-import AppError from '../../../errors/AppError';
-import User from '../entities/User';
+import AppError from '@shared/errors/AppError';
+import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
 
-interface Request {
+interface IRequest {
   name: string;
   email: string;
   password: string;
 }
 
 class CreateUserService {
-  public async execute({ name, email, password }: Request): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
+  constructor(private usersRepository: IUsersRepository) {}
 
-    const usersEmailExists = await usersRepository.findByEmail(email);
+  public async execute({ name, email, password }: IRequest): Promise<User> {
+    const usersEmailExists = await this.usersRepository.findByEmail(email);
 
     if (usersEmailExists) {
       throw new AppError('E-mail já cadastrado!', 401);
@@ -22,13 +21,11 @@ class CreateUserService {
 
     const password_hash = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: password_hash,
     });
-
-    await usersRepository.save(user);
 
     return user;
   }
