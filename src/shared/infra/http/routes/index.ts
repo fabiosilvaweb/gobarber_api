@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import appointmentsRouter from '@modules/appointments/infra/http/routes/appointments.routes';
+import providersRouter from '@modules/appointments/infra/http/routes/providers.routes';
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
 import usersRouter from '@modules/users/infra/http/routes/users.routes';
 import passwordRouter from '@modules/users/infra/http/routes/password.routes';
@@ -16,5 +17,6 @@ routes.use('/password', passwordRouter);
 routes.use(ensureAuthenticated);
 routes.use('/appointments', appointmentsRouter);
 routes.use('/profile', profileRouter);
+routes.use('/providers', providersRouter);
 
 export default routes;
