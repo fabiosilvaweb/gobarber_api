@@ -14,6 +14,12 @@ providersRouter.get(
   '/:provider_id/month-availability',
   providerMonthAvailability.index,
 );
+
+providersRouter.get(
+  '/:provider_id/day-availability',
+  providerDayAvailability.index,
+);
+
 providersRouter.get(
   '/:provider_id/day-availability',
   providerDayAvailability.index,

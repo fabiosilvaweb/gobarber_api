@@ -1,12 +1,13 @@
+import ListProviderAppointmentsService from '@modules/appointments/services/ListProviderAppointmentsService';
 import { Router } from 'express';
 import AppointmentsController from '../controllers/AppointmentsController';
+import ProviderAppointmentsController from '../controllers/ProviderAppointmentsController';
 
 const appointmentsRouter = Router();
 const appointmentsController = new AppointmentsController();
-// appointmentsRouter.get('/', async (request, response) => {
-//   const appointments = await appointmentRepository.find();
-//   return response.json(appointments);
-// });
+const listProviderAppointments = new ProviderAppointmentsController();
+
+appointmentsRouter.get('/me', listProviderAppointments.index);
 
 appointmentsRouter.post('/', appointmentsController.create);
 
