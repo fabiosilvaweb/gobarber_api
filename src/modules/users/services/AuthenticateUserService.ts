@@ -41,7 +41,7 @@ class AuthenticateUserService {
       throw new AppError('E-mail ou senha inválidos!', 401);
     }
 
-    const token = sign({}, String(auth.secret), {
+    const token = sign({}, auth.secret, {
       subject: user.id,
       expiresIn: auth.expiresIn,
     });
