@@ -8,6 +8,10 @@ import { errors } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+
+import swagger from 'swagger-ui-express';
+import swaggerFile from 'swagger.json';
+
 import routes from './routes';
 
 import '@shared/infra/typeorm';
@@ -22,6 +26,9 @@ app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(rateLimiter);
 
 app.use(express.json());
+
+app.use('/api-docs', swagger.serve, swagger.setup(swaggerFile));
+
 app.use(routes);
 
 app.use(errors());
@@ -42,6 +49,9 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log('Servidor rodando!');
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+  console.log(`Server started on http://localhost:${port}`);
+  console.log(`Open API Docs: http://localhost:${port}/api-docs`);
 });
